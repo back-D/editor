@@ -1,0 +1,25 @@
+* {
+    box-sizing: border-box;
+}
+
+.container {
+    margin: 60px 0 0 60px;
+}
+
+#field {
+    width: 500px;
+    height: 300px;
+    display: inline-block;
+}
+
+.buttons {
+    display: inline-block;
+    vertical-align: top;
+}
+
+button {
+    display: block;
+    margin-bottom: 8px;
+    margin-left: 6px;
+    width: 68px;
+}
