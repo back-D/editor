@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/style.css">
-    <title>Title</title>
+    <script src="js/clipboard.min.js"></script>
+    <title>Editor</title>
 </head>
 <body>
 
 <section class="container">
+    <p>Для начала вставь текст/id в поле ниже.</p>
     <textarea id="field" autocomplete="off" spellcheck="false"></textarea>
     <div class="buttons">
+        <button id="init">Click me!</button>
     	<button id="edit">Row/Col</button>
         <button id="commas">Commas</button>
         <button id="quotes">Quotes</button>
-        <button id="copy">Copy</button>
+        <button id="copy" data-clipboard-target="#field">Copy</button>
     </div>
 </section>
 
