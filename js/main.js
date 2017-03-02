@@ -9,7 +9,7 @@ let val,
     flag = {
         'comma': false,
         'quote': false,
-        'row': false
+        'row': true
     };
 
 textArea.addEventListener('input', function() {
@@ -18,15 +18,17 @@ textArea.addEventListener('input', function() {
     commasBtn.style.display = 'none';
     quotesBtn.style.display = 'none';
     copyBtn.style.display = 'none';
+    flag = {
+        'comma': false,
+        'quote': false,
+        'row': true
+    };
     val = textArea.value;
 }, false);
 
 initBtn.addEventListener('click', function() {
 	val = textArea.value;
 	for (let i = 0; i < val.length; i++) {
-		if (val[i] === ' ') {
-			flag.row = true;
-		}
         if (val[i] === '\n') {
             flag.row = false;
         }
@@ -36,9 +38,6 @@ initBtn.addEventListener('click', function() {
         if (val[i] === '"' || val[i] === "'") {
             flag.quote = true;
         }
-        if (flag.row && flag.comma && flag.quote) {
-			break;
-		}
 	}
 	initBtn.style.display = 'none';
 	editBtn.style.display = 'block';
