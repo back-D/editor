@@ -1,5 +1,8 @@
 let val,
     textArea = document.getElementById('field'),
+    base64Area = document.getElementById('base'),
+    base64AreaResult = document.getElementById('baseResult'),
+    baseBtn = document.getElementById('base64'),
     commasBtn = document.getElementById('commas'),
     quotesBtn = document.getElementById('quotes'),
     editBtn = document.getElementById('edit'),
@@ -11,6 +14,16 @@ let val,
         'quote': false,
         'row': true
     };
+
+baseBtn.addEventListener('click', function() {
+    val = base64Area.value;
+    let arr = val.split(', ');
+    let resultArr = [];
+    for (let i = 0; i < arr.length; i++) {
+        resultArr.push(window.atob(arr[i]).slice(0, -11));
+    }
+    base64AreaResult.value = resultArr.join('\n');
+}, false)
 
 textArea.addEventListener('input', function() {
 	initBtn.style.display = 'block';
