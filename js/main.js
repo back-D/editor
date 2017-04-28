@@ -8,6 +8,7 @@ let val,
     editBtn = document.getElementById('edit'),
 	initBtn = document.getElementById('init'),
 	copyBtn = document.getElementById('copy'),
+	result = document.getElementById('result'),
 	clipboard = new Clipboard(copyBtn),
     flag = {
         'comma': false,
@@ -18,49 +19,19 @@ let val,
 baseBtn.addEventListener('click', function() {
     val = base64Area.value;
     let arr = val.split(', ');
-    let resultArr = [];
+    // let resultArr = [];
     for (let i = 0; i < arr.length; i++) {
-        resultArr.push(window.atob(arr[i]).slice(0, -11));
+        // resultArr.push(window.atob(arr[i]).slice(0, -11));
+        let p = document.createElement('p');
+        p.innerHTML = window.atob(arr[i]);
+        p.className = 'decodedHash';
+        result.appendChild(p);
     }
-    base64AreaResult.value = resultArr.join('\n');
-}, false)
-
-textArea.addEventListener('input', function() {
-	initBtn.style.display = 'block';
-    editBtn.style.display = 'none';
-    commasBtn.style.display = 'none';
-    quotesBtn.style.display = 'none';
-    copyBtn.style.display = 'none';
-    flag = {
-        'comma': false,
-        'quote': false,
-        'row': true
-    };
-    val = textArea.value;
-}, false);
-
-initBtn.addEventListener('click', function() {
-	val = textArea.value;
-	for (let i = 0; i < val.length; i++) {
-        if (val[i] === '\n') {
-            flag.row = false;
-        }
-        if (val[i] === ',') {
-            flag.comma = true;
-        }
-        if (val[i] === '"' || val[i] === "'") {
-            flag.quote = true;
-        }
-	}
-	initBtn.style.display = 'none';
-	editBtn.style.display = 'block';
-	commasBtn.style.display = 'block';
-	quotesBtn.style.display = 'block';
-	copyBtn.style.display = 'block';
-	edit();
+    // base64AreaResult.value = resultArr.join('\n');
 }, false);
 
 function deleteCommas() {
+    checkFormat();
     val = textArea.value;
     if (flag.row) {
         textArea.value = val.split(', ').join(' ');
@@ -71,6 +42,7 @@ function deleteCommas() {
 }
 
 function addCommas() {
+    checkFormat();
     val = textArea.value;
     if (flag.row) {
         textArea.value = val.split(' ').join(', ');
@@ -81,6 +53,7 @@ function addCommas() {
 }
 
 function edit() {
+    checkFormat();
     val = textArea.value;
     if (flag.row) {
         let arr = val.split(' ');
@@ -108,6 +81,7 @@ function edit() {
 editBtn.addEventListener('click', edit, false);
 
 commasBtn.addEventListener('click', function() {
+    checkFormat();
     val = textArea.value;
     if (!flag.comma) {
         addCommas();
@@ -116,7 +90,29 @@ commasBtn.addEventListener('click', function() {
 
 }, false);
 
+function checkFormat() {
+    flag = {
+        'comma': false,
+        'quote': false,
+        'row': true
+    };
+    val = textArea.value;
+    val = textArea.value;
+    for (let i = 0; i < val.length; i++) {
+        if (val[i] === '\n') {
+            flag.row = false;
+        }
+        if (val[i] === ',') {
+            flag.comma = true;
+        }
+        if (val[i] === '"' || val[i] === "'") {
+            flag.quote = true;
+        }
+    }
+}
+
 quotesBtn.addEventListener('click', function() {
+    checkFormat();
 	//Дальше будет совсем говнище
 	if (!flag.quote) {
 		if (flag.row) {

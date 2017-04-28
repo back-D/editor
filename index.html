@@ -9,24 +9,30 @@
 <body>
 
 <section class="container">
-    <p>Для начала вставь текст/id в поле ниже.</p>
+    <p>Редактор</p>
     <textarea id="field" autocomplete="off" spellcheck="false"></textarea>
     <div class="buttons">
-        <button id="init">Click me!</button>
-    	<button id="edit">Row/Col</button>
+        <!--<button id="init">Click me!</button>-->
+        <button id="edit">Row/Col</button>
         <button id="commas">Commas</button>
         <button id="quotes">Quotes</button>
         <button id="copy" data-clipboard-target="#field">Copy</button>
     </div>
 </section>
 
-<section class='container'>
-    <textarea id="base" autocomplete="off" spellcheck="false"></textarea>
-    <div class='buttons'>
-        <button id='base64'>Start</button>
+<section class="container cf">
+    <div class="workspace">
+        <p>Base64 декодер</p>
+        <textarea id="base" autocomplete="off" spellcheck="false"></textarea>
+        <div class='buttons'>
+            <button id='base64'>Start</button>
+        </div>
     </div>
-    <textarea id='baseResult' autocomplete="off" spellcheck="false"></textarea>>
-</section>>
+    <div class="workspace" id="result">
+        <p>Хеш</p>
+    </div>
+    <!--<textarea id='baseResult' autocomplete="off" spellcheck="false"></textarea>-->
+</section>
 
 
 <script src="js/main.js"></script>
