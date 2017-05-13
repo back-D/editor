@@ -23,7 +23,11 @@ baseBtn.addEventListener('click', function() {
         if (!arr[i]) {
             continue;
         }
-        createElements(arr[i]);
+        try {
+            createElements(arr[i]);
+        } catch(e) {
+            alert('Ошибка в ' + (i + 1) + '-м click_id');
+        }
     }
 }, false);
 
