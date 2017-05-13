@@ -23,30 +23,7 @@ baseBtn.addEventListener('click', function() {
         if (!arr[i]) {
             continue;
         }
-
-        let resultBlock = document.createElement('div');
-        resultBlock.className = 'decodedClickId';
-        result.appendChild(resultBlock);
-
-        let decodedHash = document.createElement('span');
-        let decodedHashValue = window.atob(arr[i]).slice(0, -11);
-        decodedHash.innerHTML = decodedHashValue;
-        decodedHash.className = 'decodedHash';
-        resultBlock.appendChild(decodedHash);
-
-        let clickTime = document.createElement('span');
-        let timeValue = convertTimestamp(window.atob(arr[i]).slice(-10));
-        clickTime.innerHTML = 'Click Time: ' + timeValue;
-        clickTime.className = 'clickTime';
-        resultBlock.appendChild(clickTime);
-
-        let decoderLink = document.createElement('a');
-        let decoderLinkValue = 'https://admin.marketgid.com/cab/admin/show-hash-decoder?hash=' + decodedHashValue;
-        decoderLink.setAttribute('href', decoderLinkValue);
-        decoderLink.setAttribute('target', '_blank');
-        decoderLink.innerHTML = 'Декодер хеша';
-        resultBlock.appendChild(decoderLink);
-
+        createElements(arr[i]);
     }
 }, false);
 
@@ -75,10 +52,20 @@ function addCommas() {
     checkFormat();
     val = textArea.value;
     if (flag.row) {
-        textArea.value = val.split(' ').join(', ');
+        textArea.value = editArray(val.split(' ')).join(', ');
     } else {
-        textArea.value = val.split('\n').join(',\n');
+        textArea.value = editArray(val.split('\n')).join(',\n');
     }
+}
+
+function editArray(origin) {
+    let result = [];
+    for (let i = 0; i < origin.length; i++) {
+        if (origin[i] !== '' && origin[i] !== '\n') {
+            result.push(origin[i]);
+        }
+    }
+    return result;
 }
 
 function edit() {
@@ -249,4 +236,29 @@ function convertTimestamp(timestamp) {
     time = yyyy + '-' + mm + '-' + dd + ', ' + h + ':' + min + ' ' + ampm;
 
     return time;
+}
+
+function createElements(item) {
+    let resultBlock = document.createElement('div');
+    resultBlock.className = 'decodedClickId';
+    result.appendChild(resultBlock);
+
+    let decodedHash = document.createElement('span');
+    let decodedHashValue = window.atob(item).slice(0, -11);
+    decodedHash.innerHTML = decodedHashValue;
+    decodedHash.className = 'decodedHash';
+    resultBlock.appendChild(decodedHash);
+
+    let clickTime = document.createElement('span');
+    let timeValue = convertTimestamp(window.atob(item).slice(-10));
+    clickTime.innerHTML = 'Click Time: ' + timeValue;
+    clickTime.className = 'clickTime';
+    resultBlock.appendChild(clickTime);
+
+    let decoderLink = document.createElement('a');
+    let decoderLinkValue = 'https://admin.marketgid.com/cab/admin/show-hash-decoder?hash=' + decodedHashValue;
+    decoderLink.setAttribute('href', decoderLinkValue);
+    decoderLink.setAttribute('target', '_blank');
+    decoderLink.innerHTML = 'Декодер хеша';
+    resultBlock.appendChild(decoderLink);
 }
