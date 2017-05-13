@@ -31,7 +31,7 @@
     vertical-align: top;
 }
 
-button {
+button, #gateway {
     display: block;
     margin-bottom: 8px;
     margin-left: 6px;
@@ -66,11 +66,6 @@ button {
     border: 1px solid black;
 }
 
-.decodedHash {
-
+#gateway {
+    margin-top: 32px;
 }
-
-.clickTime {
-
-}
-

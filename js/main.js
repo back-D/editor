@@ -1,16 +1,33 @@
 ;let val,
     textArea = document.getElementById('field'),
-    // base64Area = document.getElementById('base'),
-    // base64AreaResult = document.getElementById('baseResult'),
     baseBtn = document.getElementById('base64'),
     commasBtn = document.getElementById('commas'),
     quotesBtn = document.getElementById('quotes'),
     editBtn = document.getElementById('edit'),
-	// initBtn = document.getElementById('init'),
 	copyBtn = document.getElementById('copy'),
+    postbackBtn = document.getElementById('postback'),
 	result = document.getElementById('result'),
 	clipboard = new Clipboard(copyBtn),
     flag;
+
+postbackBtn.addEventListener('click', function() {
+    val = textArea.value;
+    textArea.value = val.split(' ').join('').split(',').join('').split('"').join('').split("'").join('\n');
+    val = textArea.value;
+    let arr = val.split('\n');
+    let gateway = document.getElementById('gateway');
+    let option = gateway.options[gateway.selectedIndex].value;
+    let eventName = prompt('Введи название ивента:', 'lead');
+    for (let i = 0; i < arr.length; i++) {
+        let img = document.createElement('img');
+        let postbackLink = '//a.' + option + '.com/postback?c=' + arr[i] + '&e=' + eventName;
+        if (option === 'adskeeper') {
+            postbackLink = '//a.' + option + '.co.uk/postback?c=' + arr[i] + '&e=' + eventName;
+        }
+        img.setAttribute('src', postbackLink);
+    }
+    alert('OK');
+}, false);
 
 baseBtn.addEventListener('click', function() {
     val = textArea.value;
@@ -18,7 +35,6 @@ baseBtn.addEventListener('click', function() {
     val = textArea.value;
     let arr = val.split('\n');
     clear();
-    // let resultArr = [];
     for (let i = 0; i < arr.length; i++) {
         if (!arr[i]) {
             continue;
