@@ -1,5 +1,6 @@
 ;let val,
     textArea = document.getElementById('field'),
+    gateway = document.getElementById('gateway'),
     baseBtn = document.getElementById('base64'),
     commasBtn = document.getElementById('commas'),
     quotesBtn = document.getElementById('quotes'),
@@ -15,7 +16,6 @@ postbackBtn.addEventListener('click', function() {
     textArea.value = val.split(' ').join('').split(',').join('').split('"').join('').split("'").join('\n');
     val = textArea.value;
     let arr = val.split('\n');
-    let gateway = document.getElementById('gateway');
     let option = gateway.options[gateway.selectedIndex].value;
     let eventName = prompt('Введи название ивента:', 'lead');
     for (let i = 0; i < arr.length; i++) {
@@ -259,6 +259,8 @@ function convertTimestamp(timestamp) {
 }
 
 function createElements(item) {
+    let option = gateway.options[gateway.selectedIndex].value;
+
     let resultBlock = document.createElement('div');
     resultBlock.className = 'decodedClickId';
     result.appendChild(resultBlock);
@@ -276,7 +278,11 @@ function createElements(item) {
     resultBlock.appendChild(clickTime);
 
     let decoderLink = document.createElement('a');
-    let decoderLinkValue = 'https://admin.marketgid.com/cab/admin/show-hash-decoder?hash=' + decodedHashValue;
+    let location = 'marketgid';
+    if (option === 'mgid' || option === 'adskeeper') {
+        location = 'mgid';
+    }
+    let decoderLinkValue = 'https://admin.' + location + '.com/cab/admin/show-hash-decoder?hash=' + decodedHashValue;
     decoderLink.setAttribute('href', decoderLinkValue);
     decoderLink.setAttribute('target', '_blank');
     decoderLink.innerHTML = 'Декодер хеша';
