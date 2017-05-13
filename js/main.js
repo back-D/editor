@@ -50,7 +50,7 @@ baseBtn.addEventListener('click', function() {
 }, false);
 
 function clear() {
-    let results = document.getElementsByClassName('decodedHash');
+    let results = document.getElementsByClassName('decodedClickId');
     for (let i = results.length - 1; i >= 0; i--) {
         if (results[i]) {
             results[i].parentNode.removeChild(results[i]);
