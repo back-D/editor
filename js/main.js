@@ -1,30 +1,62 @@
-let val,
+;let val,
     textArea = document.getElementById('field'),
-    base64Area = document.getElementById('base'),
-    base64AreaResult = document.getElementById('baseResult'),
+    // base64Area = document.getElementById('base'),
+    // base64AreaResult = document.getElementById('baseResult'),
     baseBtn = document.getElementById('base64'),
     commasBtn = document.getElementById('commas'),
     quotesBtn = document.getElementById('quotes'),
     editBtn = document.getElementById('edit'),
-	initBtn = document.getElementById('init'),
+	// initBtn = document.getElementById('init'),
 	copyBtn = document.getElementById('copy'),
 	result = document.getElementById('result'),
 	clipboard = new Clipboard(copyBtn),
     flag;
 
 baseBtn.addEventListener('click', function() {
-    val = base64Area.value;
-    let arr = val.split(', ');
+    val = textArea.value;
+    textArea.value = val.split(' ').join('').split(',').join('').split('"').join('').split("'").join('\n');
+    val = textArea.value;
+    let arr = val.split('\n');
+    clear();
     // let resultArr = [];
     for (let i = 0; i < arr.length; i++) {
-        // resultArr.push(window.atob(arr[i]).slice(0, -11));
-        let p = document.createElement('p');
-        p.innerHTML = window.atob(arr[i]);
-        p.className = 'decodedHash';
-        result.appendChild(p);
+        if (!arr[i]) {
+            continue;
+        }
+
+        let resultBlock = document.createElement('div');
+        resultBlock.className = 'decodedClickId';
+        result.appendChild(resultBlock);
+
+        let decodedHash = document.createElement('span');
+        let decodedHashValue = window.atob(arr[i]).slice(0, -11);
+        decodedHash.innerHTML = decodedHashValue;
+        decodedHash.className = 'decodedHash';
+        resultBlock.appendChild(decodedHash);
+
+        let clickTime = document.createElement('span');
+        clickTime.innerHTML = 'Click Time: ' + Date(arr[i].slice(-10));
+        clickTime.className = 'clickTime';
+        resultBlock.appendChild(clickTime);
+
+        let decoderLink = document.createElement('a');
+        let decoderLinkValue = 'https://admin.marketgid.com/cab/admin/show-hash-decoder?hash=' + decodedHashValue;
+        decoderLink.setAttribute('href', decoderLinkValue);
+        decoderLink.setAttribute('target', '_blank');
+        decoderLink.innerHTML = 'Декодер хеша';
+        resultBlock.appendChild(decoderLink);
+
     }
-    // base64AreaResult.value = resultArr.join('\n');
 }, false);
+
+function clear() {
+    let results = document.getElementsByClassName('decodedHash');
+    for (let i = results.length - 1; i >= 0; i--) {
+        if (results[i]) {
+            results[i].parentNode.removeChild(results[i]);
+        }
+    }
+}
 
 function deleteCommas() {
     checkFormat();
@@ -116,27 +148,27 @@ function checkFormat() {
     }
 }
 
-quotesBtn.addEventListener('click', function() {
+function quotes() {
     checkFormat();
 
-	if (!flag.quote) {
-		if (flag.row) {
-			if (flag.comma) {
-				deleteCommas();
-				let arr = textArea.value.split(' ');
-				for (let i = 0; i < arr.length; i++) {
-					arr[i] = '"' + arr[i] + '"';
-				}
-				textArea.value = arr.join(', ');
-				flag.comma = true;
-			} else {
-				let arr = textArea.value.split(' ');
+    if (!flag.quote) {
+        if (flag.row) {
+            if (flag.comma) {
+                deleteCommas();
+                let arr = textArea.value.split(' ');
+                for (let i = 0; i < arr.length; i++) {
+                    arr[i] = '"' + arr[i] + '"';
+                }
+                textArea.value = arr.join(', ');
+                flag.comma = true;
+            } else {
+                let arr = textArea.value.split(' ');
                 for (let i = 0; i < arr.length; i++) {
                     arr[i] = '"' + arr[i] + '"';
                 }
                 textArea.value = arr.join(' ');
-			}
-		} else {
+            }
+        } else {
             if (flag.comma) {
                 deleteCommas();
                 let arr = textArea.value.split('\n');
@@ -152,40 +184,41 @@ quotesBtn.addEventListener('click', function() {
                 }
                 textArea.value = arr.join('\n');
             }
-		}
-		flag.quote = true;
-	} else {
-		val = textArea.value;
-		if (flag.row) {
-			if (flag.comma) {
-				let arr = val.split(', ');
-				for (let i = 0; i < arr.length; i++) {
-					arr[i] = arr[i].slice(1, -1);
-				}
-				textArea.value = arr.join(', ');
-			} else {
+        }
+        flag.quote = true;
+    } else {
+        val = textArea.value;
+        if (flag.row) {
+            if (flag.comma) {
+                let arr = val.split(', ');
+                for (let i = 0; i < arr.length; i++) {
+                    arr[i] = arr[i].slice(1, -1);
+                }
+                textArea.value = arr.join(', ');
+            } else {
                 let arr = val.split(' ');
                 for (let i = 0; i < arr.length; i++) {
                     arr[i] = arr[i].slice(1, -1);
                 }
                 textArea.value = arr.join(' ');
-			}
-		} else {
-			if (flag.comma) {
+            }
+        } else {
+            if (flag.comma) {
                 let arr = val.split(',\n');
                 for (let i = 0; i < arr.length; i++) {
                     arr[i] = arr[i].slice(1, -1);
                 }
                 textArea.value = arr.join(',\n');
-			} else {
+            } else {
                 let arr = val.split('\n');
                 for (let i = 0; i < arr.length; i++) {
                     arr[i] = arr[i].slice(1, -1);
                 }
                 textArea.value = arr.join('\n');
-			}
-		}
-		flag.quote = false;
-	}
-    console.log(flag);
-}, false);
+            }
+        }
+        flag.quote = false;
+    }
+}
+
+quotesBtn.addEventListener('click', quotes, false);
