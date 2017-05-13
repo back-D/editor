@@ -13,7 +13,7 @@
 
 postbackBtn.addEventListener('click', function() {
     val = textArea.value;
-    textArea.value = val.split(' ').join('').split(',').join('').split('"').join('').split("'").join('\n');
+    textArea.value = val.split(',').join(' ').split('"').join('').split("'").join('\n');
     val = textArea.value;
     let arr = val.split('\n');
     let option = gateway.options[gateway.selectedIndex].value;
@@ -31,7 +31,7 @@ postbackBtn.addEventListener('click', function() {
 
 baseBtn.addEventListener('click', function() {
     val = textArea.value;
-    textArea.value = val.split(' ').join('').split(',').join('').split('"').join('').split("'").join('\n');
+    textArea.value = val.split(',').join(' ').split('"').join('').split("'").join('\n');
     val = textArea.value;
     let arr = val.split('\n');
     clear();
