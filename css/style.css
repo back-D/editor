@@ -69,3 +69,7 @@ button, #gateway {
 #gateway {
     margin-top: 32px;
 }
+
+#lnResult {
+    padding-right: 12px;
+}

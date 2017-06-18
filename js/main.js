@@ -8,6 +8,9 @@
 	copyBtn = document.getElementById('copy'),
     postbackBtn = document.getElementById('postback'),
 	result = document.getElementById('result'),
+    lnResult = document.getElementById('lnResult'),
+    colResult = document.getElementById('colResult'),
+    lines = document.getElementById('lines'),
 	clipboard = new Clipboard(copyBtn),
     flag;
 
@@ -288,3 +291,52 @@ function createElements(item) {
     decoderLink.innerHTML = 'Декодер хеша';
     resultBlock.appendChild(decoderLink);
 }
+
+function getCaret(el) {
+    if (el.selectionStart) {
+        return el.selectionStart;
+    } else if (document.selection) {
+        el.focus();
+
+        let r = document.selection.createRange();
+        if (r == null) {
+            return 0;
+        }
+
+        let re = el.createTextRange(),
+            rc = re.duplicate();
+        re.moveToBookmark(r.getBookmark());
+        rc.setEndPoint('EndToStart', re);
+
+        return rc.text.length;
+    }
+    return 0;
+}
+
+function rowCounter(el) {
+    return el.value.split('\n').length;
+}
+
+function getRow(el) {
+    let caret = getCaret(el);
+    let text = el.value.substr(0, caret).split('\n');
+
+    return text.length;
+}
+
+function getPosInRow(el) {
+    let caret = getCaret(el);
+    let text = el.value.substr(0, caret).replace(/^(.*[\n\r])*([^\n\r]*)$/, '$2');
+
+    return text.length;
+}
+
+function rowLineCounter() {
+    lnResult.innerHTML = getPosInRow(textArea);
+    colResult.innerHTML = getRow(textArea);
+    lines.innerHTML = rowCounter(textArea);
+    return true;
+}
+
+textArea.addEventListener('click', rowLineCounter, false);
+textArea.addEventListener('keyup', rowLineCounter, false);
