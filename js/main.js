@@ -168,14 +168,14 @@ function quotes() {
                 deleteCommas();
                 let arr = textArea.value.split(' ');
                 for (let i = 0; i < arr.length; i++) {
-                    arr[i] = '"' + arr[i] + '"';
+                    arr[i] = "'" + arr[i] + "'";
                 }
                 textArea.value = arr.join(', ');
                 flag.comma = true;
             } else {
                 let arr = textArea.value.split(' ');
                 for (let i = 0; i < arr.length; i++) {
-                    arr[i] = '"' + arr[i] + '"';
+                    arr[i] = "'" + arr[i] + "'";
                 }
                 textArea.value = arr.join(' ');
             }
@@ -184,14 +184,14 @@ function quotes() {
                 deleteCommas();
                 let arr = textArea.value.split('\n');
                 for (let i = 0; i < arr.length; i++) {
-                    arr[i] = '"' + arr[i] + '"';
+                    arr[i] = "'" + arr[i] + "'";
                 }
                 textArea.value = arr.join(',\n');
                 flag.comma = true;
             } else {
                 let arr = textArea.value.split('\n');
                 for (let i = 0; i < arr.length; i++) {
-                    arr[i] = '"' + arr[i] + '"';
+                    arr[i] = "'" + arr[i] + "'";
                 }
                 textArea.value = arr.join('\n');
             }
