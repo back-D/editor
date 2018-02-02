@@ -15,6 +15,7 @@
         <button id="edit">Row/Col</button>
         <button id="commas">Commas</button>
         <button id="quotes">Quotes</button>
+        <button id="crc32">CRC32</button>
         <button id="copy" data-clipboard-target="#field">Copy</button>
         <select id="gateway">
             <option value="marketgid">Marketgid</option>
@@ -22,7 +23,6 @@
             <option value="mgid">Mgid</option>
             <option value="adskeeper">Adskeeper</option>
         </select>
-        <button id="base64">Base64 decode</button>
         <button id="postback">Send postback</button>
     </div>
     <div>
@@ -34,10 +34,13 @@
     </div>
 </section>
 
-<section class="container cf">
-    <div class="workspace" id="result">
-        <p>Расшифровка click_id</p>
+<section class="container">
+    <p>Unix timestamp convert</p>
+    <input id="timestamp-input">
+    <div class="buttons">
+        <button id="timestamp">Convert</button>
     </div>
+    <p id="tsResult"></p>
 </section>
 
 

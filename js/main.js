@@ -12,6 +12,9 @@
     colResult = document.getElementById('colResult'),
     lines = document.getElementById('lines'),
 	clipboard = new Clipboard(copyBtn),
+    timestamp = document.getElementById('timestamp-input'),
+    timestampBtn = document.getElementById('timestamp'),
+    crc32Btn = document.getElementById('crc32'),
     flag;
 
 postbackBtn.addEventListener('click', function() {
@@ -30,24 +33,6 @@ postbackBtn.addEventListener('click', function() {
         img.setAttribute('src', postbackLink);
     }
     alert('OK');
-}, false);
-
-baseBtn.addEventListener('click', function() {
-    val = textArea.value;
-    textArea.value = val.split(',').join(' ').split('"').join('').split("'").join('\n');
-    val = textArea.value;
-    let arr = val.split('\n');
-    clear();
-    for (let i = 0; i < arr.length; i++) {
-        if (!arr[i]) {
-            continue;
-        }
-        try {
-            createElements(arr[i]);
-        } catch(e) {
-            alert('Ошибка в ' + (i + 1) + '-м click_id');
-        }
-    }
 }, false);
 
 function clear() {
@@ -235,7 +220,7 @@ function quotes() {
 quotesBtn.addEventListener('click', quotes, false);
 
 function convertTimestamp(timestamp) {
-    var d = new Date(timestamp * 1000),	// Convert the passed timestamp to milliseconds
+    let d = new Date(timestamp * 1000),	// Convert the passed timestamp to milliseconds
         yyyy = d.getFullYear(),
         mm = ('0' + (d.getMonth() + 1)).slice(-2),	// Months are zero based. Add leading 0.
         dd = ('0' + d.getDate()).slice(-2),			// Add leading 0.
@@ -261,36 +246,49 @@ function convertTimestamp(timestamp) {
     return time;
 }
 
-function createElements(item) {
-    let option = gateway.options[gateway.selectedIndex].value;
+timestampBtn.addEventListener('click', function() {
+    val = timestamp.value;
+    let result = document.getElementById('tsResult');
+    result.innerHTML = convertTimestamp(val);
+}, false);
 
-    let resultBlock = document.createElement('div');
-    resultBlock.className = 'decodedClickId';
-    result.appendChild(resultBlock);
-
-    let decodedHash = document.createElement('span');
-    let decodedHashValue = window.atob(item).slice(0, -11);
-    decodedHash.innerHTML = decodedHashValue;
-    decodedHash.className = 'decodedHash';
-    resultBlock.appendChild(decodedHash);
-
-    let clickTime = document.createElement('span');
-    let timeValue = convertTimestamp(window.atob(item).slice(-10));
-    clickTime.innerHTML = 'Click Time: ' + timeValue;
-    clickTime.className = 'clickTime';
-    resultBlock.appendChild(clickTime);
-
-    let decoderLink = document.createElement('a');
-    let location = 'marketgid';
-    if (option === 'mgid' || option === 'adskeeper') {
-        location = 'mgid';
+function makeCRCTable() {
+    let c;
+    let crcTable = [];
+    for(let n =0; n < 256; n++){
+        c = n;
+        for(let k =0; k < 8; k++){
+            c = ((c&1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1));
+        }
+        crcTable[n] = c;
     }
-    let decoderLinkValue = 'https://admin.' + location + '.com/cab/admin/show-hash-decoder?hash=' + decodedHashValue;
-    decoderLink.setAttribute('href', decoderLinkValue);
-    decoderLink.setAttribute('target', '_blank');
-    decoderLink.innerHTML = 'Декодер хеша';
-    resultBlock.appendChild(decoderLink);
+    return crcTable;
 }
+
+function crc32(str) {
+    let crcTable = window.crcTable || (window.crcTable = makeCRCTable());
+    let crc = 0 ^ (-1);
+
+    for (let i = 0; i < str.length; i++ ) {
+        crc = (crc >>> 8) ^ crcTable[(crc ^ str.charCodeAt(i)) & 0xFF];
+    }
+
+    return (crc ^ (-1)) >>> 0;
+};
+
+crc32Btn.addEventListener('click', function () {
+    checkFormat();
+    val = textArea.value;
+    if(!flag.row && !flag.comma && !flag.quote) {
+        let arr = textArea.value.split('\n');
+        for(let i = 0; i < arr.length; i++) {
+            arr[i] = crc32(arr[i]);
+        }
+        textArea.value = arr.join('\n');
+    } else {
+        alert('Wrong format');
+    }
+},false);
 
 function getCaret(el) {
     if (el.selectionStart) {
