@@ -15,6 +15,12 @@
     timestamp = document.getElementById('timestamp-input'),
     timestampBtn = document.getElementById('timestamp'),
     crc32Btn = document.getElementById('crc32'),
+    prefixInput = document.getElementById('prefixInput'),
+    suffixInpit = document.getElementById('suffixInput'),
+    constructBtn = document.getElementById('construct'),
+    backUpBtn = document.getElementById('backUp'),
+    backUpRestoreBtn,
+    backUp,
     flag;
 
 postbackBtn.addEventListener('click', function() {
@@ -335,6 +341,51 @@ function rowLineCounter() {
     lines.innerHTML = rowCounter(textArea);
     return true;
 }
+
+prefixInput.oninput = function() {
+    prefixInput.value = prefixInput.value.replace("'", '"');
+}
+
+suffixInput.oninput = function() {
+    suffixInput.value = suffixInput.value.replace("'", '"');
+}
+
+constructBtn.onclick = function() {
+    if(!textArea.value) {
+        alert('Хватит тыкоть!');
+        return;
+    }
+
+    deleteCommas();
+    while (flag.row) {
+        edit();
+        checkFormat();
+    }
+
+    let arr = textArea.value.split('\n');
+    for(let i = 0; i < arr.length; i++) {
+        arr[i] = prefixInput.value + arr[i] + suffixInput.value;
+    }
+    textArea.value = arr.join(',\n');
+}
+
+backUpBtn.onclick = function() {
+    backUp = textArea.value;
+
+    if(!document.getElementById('backUpBtn')) {
+        let backUpBtn = document.createElement('button');
+        backUpBtn.innerHTML = 'restore backup';
+        backUpBtn.id = 'backUpRestoreBtn';
+        let buttonCont = document.getElementsByClassName('buttons')[0];
+        buttonCont.insertBefore(backUpBtn, constructBtn);
+        backUpRestoreBtn = document.getElementById('backUpRestoreBtn');
+        backUpRestoreBtn.onclick = function() {
+        textArea.value = backUp;
+        backUpRestoreBtn.remove();
+    }
+    }
+}
+
 
 textArea.addEventListener('click', rowLineCounter, false);
 textArea.addEventListener('keyup', rowLineCounter, false);

@@ -10,6 +10,12 @@
 
 <section class="container">
     <p>Редактор</p>
+    <div class="inputWrapper">
+        <label for="prefixInput">Префикс:</label>
+        <input type="text" id="prefixInput" name="prefixInput">
+        <label for="suffixInput">Суфикс:</label>
+        <input type="text" id="suffixInput" name="suffixInput">
+    </div>
     <textarea id="field" autocomplete="off" spellcheck="false"></textarea>
     <div class="buttons">
         <button id="edit">Row/Col</button>
@@ -17,6 +23,8 @@
         <button id="quotes">Quotes</button>
         <button id="crc32">CRC32</button>
         <button id="copy" data-clipboard-target="#field">Copy</button>
+        <button id="backUp">backup</button>
+        <button id="construct">Add P/S</button>
         <select id="gateway">
             <option value="marketgid">Marketgid</option>
             <option value="tovarro">Tovarro</option>
